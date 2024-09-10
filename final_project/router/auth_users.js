@@ -55,8 +55,20 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const bookNum = req.params.isbn;
+
+  let bookReview = books[bookNum].reviews;
+
+  let username = req.body.username;
+  let review = req.body.review;
+  if(username && (username == req.session.authorization.username)) {
+    bookReview[username] = review;
+    // console.log(req.session.authorization.username);
+    console.log(books[bookNum]);
+    return res.status(200).json({ message: "User review updated"});
+  } else {
+    return res.status(208).json({ message: "Invalid username" });
+  }
 });
 
 module.exports.authenticated = regd_users;
