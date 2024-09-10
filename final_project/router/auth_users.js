@@ -61,11 +61,24 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
   let username = req.body.username;
   let review = req.body.review;
+
   if(username && (username == req.session.authorization.username)) {
     bookReview[username] = review;
     // console.log(req.session.authorization.username);
     console.log(books[bookNum]);
     return res.status(200).json({ message: "User review updated"});
+  } else {
+    return res.status(208).json({ message: "Invalid username" });
+  }
+});
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const bookNum = req.params.isbn;
+  let username = req.body.username;
+  if(username && (username == req.session.authorization.username)) {
+    delete books[bookNum].reviews[username];
+    console.log(books[bookNum]);
+    return res.status(200).json({ message: "User review deleted"});
   } else {
     return res.status(208).json({ message: "Invalid username" });
   }
