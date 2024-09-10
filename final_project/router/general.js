@@ -26,7 +26,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
 public_users.get('/author/:author',function (req, res) {
   const bookAuthor = req.params.author;
   const regex = new RegExp(bookAuthor, 'gi');
-  let filteredBooks = []; 
+  let filteredBooks = [];
   Object.values(books).forEach((book) => {
     if(book.author.search(regex) != -1) {
       filteredBooks.push(book);
@@ -43,7 +43,7 @@ public_users.get('/author/:author',function (req, res) {
 public_users.get('/title/:title',function (req, res) {
   const bookTitle = req.params.title;
   const regex = new RegExp(bookTitle, 'gi');
-  let filteredBooks = []; 
+  let filteredBooks = [];
   Object.values(books).forEach((book) => {
     if(book.title.search(regex) != -1) {
       filteredBooks.push(book);
@@ -54,8 +54,8 @@ public_users.get('/title/:title',function (req, res) {
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const bookNum = req.params.isbn;
+  return res.send(JSON.stringify(books[bookNum].reviews, null, 4));
 });
 
 module.exports.general = public_users;
