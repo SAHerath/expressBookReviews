@@ -19,22 +19,6 @@ const getBooks = () => {
   });
 };
 
-
-public_users.post("/register", (req,res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  if (username && password) {
-      if (!isValid(username)) {
-          users.push({"username": username, "password": password});
-          return res.status(200).json({message: "User successfully registered. Now you can login"});
-      } else {
-          return res.status(404).json({message: "User already exists!"});
-      }
-  }
-  return res.status(404).json({message: "Unable to register user."});
-});
-
 // Get the book list available in the shop
 public_users.get('/', async function (req, res) {
   try {
@@ -101,6 +85,21 @@ public_users.get('/title/:title', async function (req, res) {
 public_users.get('/review/:isbn',function (req, res) {
   const bookNum = req.params.isbn;
   return res.send(JSON.stringify(books[bookNum].reviews, null, 4));
+});
+
+public_users.post("/register", (req,res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  if (username && password) {
+      if (!isValid(username)) {
+          users.push({"username": username, "password": password});
+          return res.status(200).json({message: "User successfully registered. Now you can login"});
+      } else {
+          return res.status(404).json({message: "User already exists!"});
+      }
+  }
+  return res.status(404).json({message: "Unable to register user."});
 });
 
 module.exports.general = public_users;
