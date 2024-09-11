@@ -80,16 +80,21 @@ public_users.get('/author/:author', async function (req, res) {
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
-  const bookTitle = req.params.title;
-  const regex = new RegExp(bookTitle, 'gi');
-  let filteredBooks = [];
-  Object.values(books).forEach((book) => {
-    if(book.title.search(regex) != -1) {
-      filteredBooks.push(book);
-    }
-  });
-  return res.send(JSON.stringify(filteredBooks, null, 4));
+public_users.get('/title/:title', async function (req, res) {
+  try {
+    const bookTitle = req.params.title;
+    const regex = new RegExp(bookTitle, 'gi');
+    var result = await getBooks();
+    let filteredBooks = [];
+    Object.values(result).forEach((book) => {
+      if(book.title.search(regex) != -1) {
+        filteredBooks.push(book);
+      }
+    });
+    return res.send(JSON.stringify(filteredBooks, null, 4));
+  } catch (error) {
+    res.status(500).send('Error getting books');
+  }
 });
 
 //  Get book review
