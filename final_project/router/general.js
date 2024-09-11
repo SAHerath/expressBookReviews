@@ -58,20 +58,25 @@ public_users.get('/isbn/:isbn', async function (req, res) {
 });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
-  const bookAuthor = req.params.author;
-  const regex = new RegExp(bookAuthor, 'gi');
-  let filteredBooks = [];
-  Object.values(books).forEach((book) => {
-    if(book.author.search(regex) != -1) {
-      filteredBooks.push(book);
-    }
-    // if(book.author == bookAuthor) {
-    //   //console.log(index, book);
-    //   filteredBooks.push(book);
-    // }
-  });
-  return res.send(JSON.stringify(filteredBooks, null, 4));
+public_users.get('/author/:author', async function (req, res) {
+  try {
+    const bookAuthor = req.params.author;
+    const regex = new RegExp(bookAuthor, 'gi');
+    var result = await getBooks();
+    let filteredBooks = [];
+    Object.values(result).forEach((book) => {
+      if(book.author.search(regex) != -1) {
+        filteredBooks.push(book);
+      }
+      // if(book.author == bookAuthor) {
+      //   //console.log(index, book);
+      //   filteredBooks.push(book);
+      // }
+    });
+    return res.send(JSON.stringify(filteredBooks, null, 4));
+  } catch (error) {
+    res.status(500).send('Error getting books');
+  }
 });
 
 // Get all books based on title
